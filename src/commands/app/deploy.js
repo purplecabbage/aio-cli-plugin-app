@@ -58,6 +58,7 @@ class Deploy extends BaseCommand {
       // build phase
       if (!flags['skip-build']) {
         try {
+          await this.config.runHook('aio-app.pre-build')
           await runPackageScript('pre-app-build')
         } catch (err) {
           // this is assumed to be a missing script error
@@ -78,6 +79,7 @@ class Deploy extends BaseCommand {
           }
         }
         try {
+          await this.config.runHook('aio-app.post-build')
           await runPackageScript('post-app-build')
         } catch (err) {
           // this is assumed to be a missing script error
@@ -89,6 +91,7 @@ class Deploy extends BaseCommand {
       let deployedFrontendUrl = ''
       if (!flags['skip-deploy']) {
         try {
+          await this.config.runHook('aio-app.pre-deploy')
           await runPackageScript('pre-app-deploy')
         } catch (err) {
           // this is assumed to be a missing script error
@@ -131,6 +134,7 @@ class Deploy extends BaseCommand {
         }
 
         try {
+          await this.config.runHook('aio-app.post-deploy')
           await runPackageScript('post-app-deploy')
         } catch (err) {
           // this is assumed to be a missing script error

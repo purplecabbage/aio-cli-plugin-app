@@ -22,7 +22,9 @@ class Test extends BaseCommand {
     // this just runs package.json scripts.test, we could also check that this is in fact an aio app project
     const command = flags.e2e ? 'e2e' : 'test'
     try {
+      await this.config.runHook('aio-app.pre-test')
       await appHelper.runPackageScript(command, process.cwd())
+      await this.config.runHook('aio-app.post-test')
     } catch (e) {
       return this.error(e.message, { exit: e.exitCode })
     }

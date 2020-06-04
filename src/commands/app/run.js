@@ -52,6 +52,7 @@ class Run extends BaseCommand {
     }
 
     try {
+      await this.config.runHook('aio-app.pre-run')
       await runPackageScript('pre-app-run')
     } catch (err) {
       // this is assumed to be a missing script error
@@ -95,6 +96,7 @@ class Run extends BaseCommand {
     try {
       const frontendUrl = await scripts.runDev([], runOptions)
       try {
+        await this.config.runHook('aio-app.post-run')
         await runPackageScript('post-app-run')
       } catch (err) {
         // this is assumed to be a missing script error
